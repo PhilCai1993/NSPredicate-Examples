@@ -50,7 +50,7 @@ static NSString *const cellIdentifier = @"reuse";
 - (NSMutableArray *)exampleList {
     if (!_exampleList) {
         _exampleList = [NSMutableArray array];
-        NSArray *elements = @[@"properties1",@"properties2",@"keyPath1"];
+        NSArray *elements = @[@"properties1",@"properties2",@"properties3",@"self1",@"keyPath1"];
         [_exampleList addObjectsFromArray:elements];
     }
     return _exampleList;
@@ -61,6 +61,7 @@ static NSString *const cellIdentifier = @"reuse";
 #pragma mark - ViewLife
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.tableFooterView = [UIView new];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
 }
 
@@ -115,7 +116,19 @@ static NSString *const cellIdentifier = @"reuse";
     //    NSPredicate *length4Predicate = [NSPredicate predicateWithFormat:@"firstName.length = 4"];
     NSLog(@"firstNameLength = 4 : %@",[people filteredArrayUsingPredicate:length4Predicate]);
 }
+- (void)properties3 {
+    NSArray *strings = @[@"Tag",@"Code",@"iOS",@"Name",@"nick",@"Eleme",@"MacBook Air",@"MacBook Pro",@"iPhone"];
+    NSLog(@"all : %@",strings);
+    NSPredicate *length5Predicate = [NSPredicate predicateWithFormat:@"length >= 5"];
+    NSLog(@"length >= 5 : %@",[strings filteredArrayUsingPredicate:length5Predicate]);
 
+}
+- (void)self1 {
+    NSArray *strings = @[@"Tag",@"Code",@"iOS",@"Name",@"nick",@"Eleme",@"MacBook Air",@"MacBook Pro",@"iPhone"];
+    NSLog(@"all : %@",strings);
+    NSPredicate *selfPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] 'c'"];
+    NSLog(@"c : %@",[strings filteredArrayUsingPredicate:selfPredicate]);
+}
 -(void)keyPath1 {
     //    [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
     //

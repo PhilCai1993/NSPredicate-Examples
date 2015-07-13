@@ -64,7 +64,7 @@ static NSString *const cellIdentifier = @"reuse";
 - (NSMutableArray *)exampleList {
     if (!_exampleList) {
         _exampleList = [NSMutableArray array];
-        NSArray *elements = @[@"properties1",@"properties2",@"properties3",@"self1",@"compound",@"keyPath1"];
+        NSArray *elements = @[@"properties1",@"properties2",@"properties3",@"self1",@"compound",@"block",@"keyPath1"];
         [_exampleList addObjectsFromArray:elements];
     }
     return _exampleList;
@@ -162,12 +162,19 @@ static NSString *const cellIdentifier = @"reuse";
     PHLog(@"%@ : %@",notPredicate.description,[people filteredArrayUsingPredicate:notPredicate]);
     
 }
-
--(void)keyPath1 {
-    //    [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-    //
-    //    }];
+- (void)block {
+    NSArray *people = self.people;
+    PHLog(@"people : %@",people);
+    //    In OS X v10.6, Core Data supports this method in the in-memory and atomic stores, but not in the SQLite-based store.
+    NSPredicate *firstName4Predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        Person *person = evaluatedObject;
+        return person.firstName.length>=4;
+    }];
+    PHLog(@"%@ : %@",firstName4Predicate.description,[people filteredArrayUsingPredicate:firstName4Predicate]);
 }
+-(void)keyPath1 {
+}
+
 @end
 
 

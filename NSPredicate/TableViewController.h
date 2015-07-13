@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  TableViewController.h
 //  NSPredicate
 //
 //  Created by 哲人蔡 on 15/7/12.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
-
+@interface TableViewController : UITableViewController
 
 @end
-

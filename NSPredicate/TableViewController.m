@@ -5,7 +5,7 @@
 //  Created by 哲人蔡 on 15/7/12.
 //  Copyright (c) 2015年 Phil. All rights reserved.
 //
-
+#define PHLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #import "TableViewController.h"
 @interface Person : NSObject
 @property NSString *firstName;
@@ -70,13 +70,12 @@ static NSString *const cellIdentifier = @"reuse";
     return _exampleList;
 }
 
-
-
 #pragma mark - ViewLife
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableFooterView = [UIView new];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:cellIdentifier];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 #pragma mark - UITableViewDataSource
@@ -100,67 +99,67 @@ static NSString *const cellIdentifier = @"reuse";
 #pragma mark - NSPredicate Examples
 - (void)properties1 {
     NSArray *people = self.people;
-    NSLog(@"all:%@",people);
+    PHLog(@"all:%@",people);
     NSPredicate *philPredicate = [NSPredicate predicateWithFormat:@"firstName = 'Phil'"];
     NSPredicate *cookPredicate = [NSPredicate predicateWithFormat:@"lastName = 'Cook'"];
     NSPredicate *age20Predicate = [NSPredicate predicateWithFormat:@"age <= 20"];
-    NSLog(@"%@ : %@",philPredicate.description,[people filteredArrayUsingPredicate:philPredicate]);
-    NSLog(@"%@ : %@",cookPredicate.description,[people filteredArrayUsingPredicate:cookPredicate]);
-    NSLog(@"%@ : %@",age20Predicate.description,[people filteredArrayUsingPredicate:age20Predicate]);
+    PHLog(@"%@ : %@",philPredicate.description,[people filteredArrayUsingPredicate:philPredicate]);
+    PHLog(@"%@ : %@",cookPredicate.description,[people filteredArrayUsingPredicate:cookPredicate]);
+    PHLog(@"%@ : %@",age20Predicate.description,[people filteredArrayUsingPredicate:age20Predicate]);
 }
 
 - (void)properties2 {
     NSArray *people = self.people;
-    NSLog(@"all:%@",people);
+    PHLog(@"all:%@",people);
     NSPredicate *philPredicate = [NSPredicate predicateWithFormat:@"%K = %@",@"firstName",@"Phil"];
     NSPredicate *cookPredicate = [NSPredicate predicateWithFormat:@"%K = 'Cook'",@"lastName"];
     NSPredicate *age20Predicate = [NSPredicate predicateWithFormat:@"age <= %d",20];
-    NSLog(@"%@ : %@",philPredicate.description,[people filteredArrayUsingPredicate:philPredicate]);
-    NSLog(@"%@ : %@",cookPredicate.description,[people filteredArrayUsingPredicate:cookPredicate]);
-    NSLog(@"%@ : %@",age20Predicate.description,[people filteredArrayUsingPredicate:age20Predicate]);
+    PHLog(@"%@ : %@",philPredicate.description,[people filteredArrayUsingPredicate:philPredicate]);
+    PHLog(@"%@ : %@",cookPredicate.description,[people filteredArrayUsingPredicate:cookPredicate]);
+    PHLog(@"%@ : %@",age20Predicate.description,[people filteredArrayUsingPredicate:age20Predicate]);
     //    c和d来修改操作符以相应的指定不区分大小写和变音符号
     NSPredicate *namesBeginningWithLetterPredicate = [NSPredicate predicateWithFormat:@"(firstName BEGINSWITH[cd] $letter) OR (lastName BEGINSWITH[cd] $letter)"];
-    NSLog(@"%@ : %@", namesBeginningWithLetterPredicate,[people filteredArrayUsingPredicate:[namesBeginningWithLetterPredicate predicateWithSubstitutionVariables:@{@"letter": @"c"}]]);
+    PHLog(@"%@ : %@", namesBeginningWithLetterPredicate,[people filteredArrayUsingPredicate:[namesBeginningWithLetterPredicate predicateWithSubstitutionVariables:@{@"letter": @"c"}]]);
     
     NSPredicate *length4Predicate = [NSPredicate predicateWithFormat:@"firstName.%K = 4",@"length"];
     //    euqals to ...
     //    NSPredicate *length4Predicate = [NSPredicate predicateWithFormat:@"%K.%K = 4",@"firstName",@"length"];
     //    and euqals to ...
     //    NSPredicate *length4Predicate = [NSPredicate predicateWithFormat:@"firstName.length = 4"];
-    NSLog(@"%@ : %@",length4Predicate.description,[people filteredArrayUsingPredicate:length4Predicate]);
+    PHLog(@"%@ : %@",length4Predicate.description,[people filteredArrayUsingPredicate:length4Predicate]);
 }
 - (void)properties3 {
     NSArray *strings = self.strings;
-    NSLog(@"all : %@",strings);
+    PHLog(@"all : %@",strings);
     NSPredicate *length5Predicate = [NSPredicate predicateWithFormat:@"length >= 5"];
-    NSLog(@"%@ : %@",length5Predicate.description,[strings filteredArrayUsingPredicate:length5Predicate]);
+    PHLog(@"%@ : %@",length5Predicate.description,[strings filteredArrayUsingPredicate:length5Predicate]);
 }
 - (void)self1 {
     NSArray *strings = self.strings;
-    NSLog(@"all : %@",strings);
+    PHLog(@"all : %@",strings);
     //    NSPredicate *selfPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] 'c'"];
     //    equals to ...
     //    NSPredicate *selfPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'c' || SELF CONTAINS 'C'"];
     //    and euqals to ...
     NSPredicate *selfPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'c' OR SELF CONTAINS 'C'"];
-    NSLog(@"%@ : %@",selfPredicate.description,[strings filteredArrayUsingPredicate:selfPredicate]);
+    PHLog(@"%@ : %@",selfPredicate.description,[strings filteredArrayUsingPredicate:selfPredicate]);
 }
 
 - (void)compound {
     NSArray *people = self.people;
     NSArray *strings = self.strings;
-    NSLog(@"allStrings : %@",strings);
+    PHLog(@"allStrings : %@",strings);
     //    OR (||)
     NSPredicate *cCPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS 'c' OR SELF CONTAINS 'C'"];
-    NSLog(@"%@ : %@",cCPredicate.description,[strings filteredArrayUsingPredicate:cCPredicate]);
+    PHLog(@"%@ : %@",cCPredicate.description,[strings filteredArrayUsingPredicate:cCPredicate]);
     //    AND (&&)
     NSPredicate *andPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH[c] 'c' AND length >= 5"];
-    NSLog(@"%@ : %@",andPredicate.description,[strings filteredArrayUsingPredicate:andPredicate]);
+    PHLog(@"%@ : %@",andPredicate.description,[strings filteredArrayUsingPredicate:andPredicate]);
     
-    NSLog(@"people : %@",people);
+    PHLog(@"people : %@",people);
     //    NOT (!)
     NSPredicate *notPredicate = [NSPredicate predicateWithFormat:@"firstName CONTAINS 'm' && NOT(lastName CONTAINS 'o')"];
-    NSLog(@"%@ : %@",notPredicate.description,[people filteredArrayUsingPredicate:notPredicate]);
+    PHLog(@"%@ : %@",notPredicate.description,[people filteredArrayUsingPredicate:notPredicate]);
     
 }
 

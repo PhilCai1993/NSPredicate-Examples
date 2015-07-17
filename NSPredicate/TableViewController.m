@@ -277,31 +277,13 @@ static NSString *const cellIdentifier = @"reuse";
 }
 
 #pragma mark - String
-- (void)stringComparison {
-    NSArray *strings = self.strings;
-    PHLog(@"strings : %@",strings);
-//    CONTAINS
-    NSPredicate *containPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] 'af'"];
-    PHLog(@"%@ : %@",containPredicate.description,[strings filteredArrayUsingPredicate:containPredicate]);
-//    BEGINSWITH
-    NSPredicate *beginwithPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@",@"Co"];
-    PHLog(@"%@ : %@",beginwithPredicate.description,[strings filteredArrayUsingPredicate:beginwithPredicate]);
-//    ENDSWITH
-    NSPredicate *endwithPredicate = [NSPredicate predicateWithFormat:@"SELF ENDSWITH %@",@"r"];
-    PHLog(@"%@ : %@",endwithPredicate.description,[strings filteredArrayUsingPredicate:endwithPredicate]);
-//    LIKE
-    NSPredicate *likePredicate1 = [NSPredicate predicateWithFormat:@"SELF LIKE %@",@"*o*e"];
-    PHLog(@"%@ : %@",likePredicate1.description,[strings filteredArrayUsingPredicate:likePredicate1]);
-    NSPredicate *likePredicate2 = [NSPredicate predicateWithFormat:@"SELF LIKE %@",@"*o?e*"];
-    PHLog(@"%@ : %@",likePredicate2.description,[strings filteredArrayUsingPredicate:likePredicate2]);
-//    MATCHES
-    NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[a-z]+$"];
-    PHLog(@"%@ : %@",matchPredicate.description,[strings filteredArrayUsingPredicate:matchPredicate]);
-}
 
 - (void)stringComparisonContain {
     NSArray *strings = self.strings;
     PHLog(@"strings : %@",strings);
+    /**
+     *  [c]: ignore Upper case
+     */
     NSPredicate *containPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] 'af'"];
     PHLog(@"%@ : %@",containPredicate.description,[strings filteredArrayUsingPredicate:containPredicate]);
 }

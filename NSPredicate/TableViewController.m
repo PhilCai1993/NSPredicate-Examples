@@ -79,7 +79,7 @@ static NSString *const cellIdentifier = @"reuse";
 - (NSMutableArray *)exampleList {
     if (!_exampleList) {
         _exampleList = [NSMutableArray array];
-        NSArray *elements = @[@"properties1",@"properties2",@"properties3",@"self1",@"compound",@"compoundPredicate",@"block",@"stringComparison",@"keyPath_avg",@"keyPath_sum",@"keyPath_max_min",@"keyPath_count",@"aggregate"];
+        NSArray *elements = @[@"properties1",@"properties2",@"properties3",@"self1",@"compound",@"compoundPredicate",@"block",@"stringComparisonContain",@"stringComparisonBeginAndEnd",@"stringComparisonLike",@"stringComparisonMatch",@"keyPath_avg",@"keyPath_sum",@"keyPath_max_min",@"keyPath_count",@"aggregate"];
         [_exampleList addObjectsFromArray:elements];
     }
     return _exampleList;
@@ -165,7 +165,15 @@ static NSString *const cellIdentifier = @"reuse";
     [self performSelector:selector];
 #pragma clang diagnostic pop
 }
-#pragma mark - NSPredicate Examples
+
+
+
+
+
+
+
+#pragma mark - Basic
+
 - (void)properties1 {
     NSArray *people = self.people;
     PHLog(@"all:%@",people);
@@ -214,6 +222,8 @@ static NSString *const cellIdentifier = @"reuse";
     PHLog(@"%@ : %@",selfPredicate.description,[strings filteredArrayUsingPredicate:selfPredicate]);
 }
 
+#pragma mark - 组合
+
 - (void)compound {
     NSArray *people = self.people;
     NSArray *strings = self.strings;
@@ -252,6 +262,9 @@ static NSString *const cellIdentifier = @"reuse";
 //    NSCompoundPredicate *compoundNotPredicate2 = [[NSCompoundPredicate alloc]initWithType:NSNotPredicateType subpredicates:@[predicate1,predicate2]];
 //    PHLog(@"%@ : %@",compoundNotPredicate2.description,[strings filteredArrayUsingPredicate:compoundNotPredicate2]);
 }
+
+#pragma mark - block
+
 - (void)block {
     NSArray *people = self.people;
     PHLog(@"people : %@",people);
@@ -262,6 +275,8 @@ static NSString *const cellIdentifier = @"reuse";
     }];
     PHLog(@"%@ : %@",firstName4Predicate.description,[people filteredArrayUsingPredicate:firstName4Predicate]);
 }
+
+#pragma mark - String
 - (void)stringComparison {
     NSArray *strings = self.strings;
     PHLog(@"strings : %@",strings);
@@ -280,10 +295,45 @@ static NSString *const cellIdentifier = @"reuse";
     NSPredicate *likePredicate2 = [NSPredicate predicateWithFormat:@"SELF LIKE %@",@"*o?e*"];
     PHLog(@"%@ : %@",likePredicate2.description,[strings filteredArrayUsingPredicate:likePredicate2]);
 //    MATCHES
-    NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"[A-Za-z0-9]+.com"];
+    NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[a-z]+$"];
     PHLog(@"%@ : %@",matchPredicate.description,[strings filteredArrayUsingPredicate:matchPredicate]);
-
 }
+
+- (void)stringComparisonContain {
+    NSArray *strings = self.strings;
+    PHLog(@"strings : %@",strings);
+    NSPredicate *containPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] 'af'"];
+    PHLog(@"%@ : %@",containPredicate.description,[strings filteredArrayUsingPredicate:containPredicate]);
+}
+- (void)stringComparisonBeginAndEnd {
+    NSArray *strings = self.strings;
+    PHLog(@"strings : %@",strings);
+    //    BEGINSWITH
+    NSPredicate *beginwithPredicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@",@"Co"];
+    PHLog(@"%@ : %@",beginwithPredicate.description,[strings filteredArrayUsingPredicate:beginwithPredicate]);
+    //    ENDSWITH
+    NSPredicate *endwithPredicate = [NSPredicate predicateWithFormat:@"SELF ENDSWITH %@",@"r"];
+    PHLog(@"%@ : %@",endwithPredicate.description,[strings filteredArrayUsingPredicate:endwithPredicate]);
+}
+- (void)stringComparisonLike {
+    NSArray *strings = self.strings;
+    PHLog(@"strings : %@",strings);
+    //    LIKE
+    NSPredicate *likePredicate1 = [NSPredicate predicateWithFormat:@"SELF LIKE %@",@"*o*e"];
+    PHLog(@"%@ : %@",likePredicate1.description,[strings filteredArrayUsingPredicate:likePredicate1]);
+    NSPredicate *likePredicate2 = [NSPredicate predicateWithFormat:@"SELF LIKE %@",@"*o?e*"];
+    PHLog(@"%@ : %@",likePredicate2.description,[strings filteredArrayUsingPredicate:likePredicate2]);
+}
+
+- (void)stringComparisonMatch {
+    NSArray *strings = self.strings;
+    PHLog(@"strings : %@",strings);
+    //    MATCHES
+    NSPredicate *matchPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[a-z]+$"];
+    PHLog(@"%@ : %@",matchPredicate.description,[strings filteredArrayUsingPredicate:matchPredicate]);
+}
+#pragma mark - keyPath
+
 -(void)keyPath_avg {
 //    avg
     NSArray *notes = self.notes;
@@ -309,6 +359,7 @@ static NSString *const cellIdentifier = @"reuse";
     NSPredicate *countPredicate = [NSPredicate predicateWithFormat:@"expenses.@count.integerValue == 5"];
     PHLog(@"%@ : %@",countPredicate.description, [notes filteredArrayUsingPredicate:countPredicate]);
 }
+#pragma mark - 存在
 - (void)aggregate {
     NSArray *notes = self.notes;
     PHLog(@"notes : %@", notes);
